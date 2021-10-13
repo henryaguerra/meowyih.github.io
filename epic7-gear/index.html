@@ -10,6 +10,16 @@
 
 <body>
 
+<div class="text-mode" style="display: none">
+
+  <textarea></textarea>
+  <div class="button" id="btn-calc" onclick="calc('typed')">Calculate</div>
+  <div class="button" id="btn-reset" onclick="reset()">Reset</div>
+  <div class="grid-error" id="errmsg"></div>
+
+</div>
+
+
 <div class="grid-container">
 
   <select id="gear-lv" name="gear-lv" onchange="resetplaceholder()">
@@ -20,10 +30,10 @@
   </select>
   
   <select id="gear-type" name="gear-type" onchange="resetplaceholder()">
-    <option id="gwhite" value="gwhite" style="color:BLACK; font-weight: bold;">一般</option><!-- 一般 白 -->
-	<option id="gblue" value="gblue" style="color:BLUE; font-weight: bold;">稀有</option> <!-- 稀有 藍 -->
-	<option id="gpink" value="gpink" style="color:HOTPINK; font-weight: bold;" selected>英雄</option> <!-- 英雄 粉紅 -->
-	<option id="gred" value="gred" style="color:RED; font-weight: bold;">傳說</option> <!-- 傳說 紅 --> 
+    <option id="gwhite" value="gwhite" style="color:BLACK; font-weight: bold;">一般</option>
+	<option id="gblue" value="gblue" style="color:BLUE; font-weight: bold;">稀有</option>
+	<option id="gpink" value="gpink" style="color:HOTPINK; font-weight: bold;" selected>英雄</option>
+	<option id="gred" value="gred" style="color:RED; font-weight: bold;">傳說</option>
   </select>
 
   <select id="gear-enc-lv" onchange="resetplaceholder()" name="gear-enc-lv">
@@ -63,12 +73,13 @@
   <input type="number" id="res" min="0" max="48" placeholder="">
   <div class="grid-result" id="score">0</div>
   
-  <div class="button" id="btn-calc" onclick="calc()">計算</div>
+  <div class="button" id="btn-calc" onclick="calc('normal')">計算</div>
   <div class="button" id="btn-reset" onclick="reset()">重置</div>
   <div class="grid-result" id="score-percentage" >0%</div>
   <div></div>
   
   <div class="grid-error" id="errmsg"></div>
 </div>
+<button onclick="switch_mode()">Click to use text</button>
 </body>
 </html>

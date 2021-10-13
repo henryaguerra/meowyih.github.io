@@ -488,18 +488,24 @@ function reset() {
 	err( "" );
 }
 
-function validate() {
+function validate(mode_) {
 	
 	// 0. atk%, 1. def%, 2. hp%, 3. eff%, 4. res%
 	// 5. critdmg
 	// 6. critch
 	// 7. spd
 	// 8. atk flat, 9. def flat, 10. hp flat
-	var data = getSubstat();
-	var substat_min = getSubstatMin();
-	var totaldata = 0;
-	var substat_name = "";
-	var reforgeMin = getReforge(0);
+	if (mode_ == 'normal') {
+		var data = getSubstat();
+		var substat_min = getSubstatMin();
+		var totaldata = 0;
+		var substat_name = "";
+		var reforgeMin = getReforge(0);
+	}
+	else {
+		data = parse_text();
+	}
+
 			
 	// check min
 	for ( var idx = 0; idx < 11; idx ++ ) {
@@ -601,13 +607,21 @@ function validate() {
 	return 0;
 }
 
-function calc() {
+function calc(mode) {
 	
 	err("");
 	
-	if ( validate() !== 0 ) {
-		return;
+	if(mode == 'normal') {
+		if ( validate('normal') !== 0 ) {
+			return;
+		}
 	}
+	else {
+		if ( validate('typed') !== 0 ) {
+			return;
+		}
+	}
+
 	
 	// 0. atk%, 1. def%, 2. hp%, 3. eff%, 4. res%
 	// 5. critdmg
@@ -1310,4 +1324,53 @@ function report( enc_time, score ) {
 
 	
 	err( str );
+}
+
+function switch_mode() {
+	// document.getElementById("text-mode").style.display = "none";
+	const element = document.querySelector('.text-mode');
+	const original = document.querySelector('.grid-container');
+	const style = getComputedStyle(element);
+	const style_original = getComputedStyle(original);
+	const x = style_original.display;
+	const mode = style.display;
+
+	if(mode == "none") {
+		element.style.display="block";
+		original.style.display="none";
+	}
+	else {
+		original.style.display="grid";
+		element.style.display="none";
+	}
+}
+
+function parse() {
+	// 0 - atk%
+	// 1 - def%
+	// 2 - hp%
+	// 3 - eff
+	// 4 - effres
+	// 5 - cd
+	// 6 - cc
+	// 7 - spd
+	// 8 - atk
+	// 9 - def
+	// 10 - hp
+	var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+	
+	// data[0] = parseInt( document.getElementById("atkper").value );
+	// data[1] = parseInt( document.getElementById("defper").value );
+	// data[2] = parseInt( document.getElementById("hpper").value );
+	// data[3] = parseInt( document.getElementById("eff").value );
+	// data[4] = parseInt( document.getElementById("res").value );
+	// data[5] = parseInt( document.getElementById("critdmg").value );
+	// data[6] = parseInt( document.getElementById("critch").value );
+	// data[7] = parseInt( document.getElementById("spd").value );
+	// data[8] = parseInt( document.getElementById("atkflat").value );
+	// data[9] = parseInt( document.getElementById("defflat").value );
+	// data[10] = parseInt( document.getElementById("hpflat").value );
+	
+
+	return data;
 }
