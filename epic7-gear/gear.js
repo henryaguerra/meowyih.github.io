@@ -1,5 +1,6 @@
 // global language configuation
 var g_lang = 'en';
+var mode = 'normal';
 
 window.onload = function() {
 	
@@ -292,17 +293,67 @@ function getSubstat() {
 	
 	var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	
-	data[0] = parseInt( document.getElementById("atkper").value );
-	data[1] = parseInt( document.getElementById("defper").value );
-	data[2] = parseInt( document.getElementById("hpper").value );
-	data[3] = parseInt( document.getElementById("eff").value );
-	data[4] = parseInt( document.getElementById("res").value );
-	data[5] = parseInt( document.getElementById("critdmg").value );
-	data[6] = parseInt( document.getElementById("critch").value );
-	data[7] = parseInt( document.getElementById("spd").value );
-	data[8] = parseInt( document.getElementById("atkflat").value );
-	data[9] = parseInt( document.getElementById("defflat").value );
-	data[10] = parseInt( document.getElementById("hpflat").value );
+	if(mode == 'normal') {
+		data[0] = parseInt( document.getElementById("atkper").value );
+		data[1] = parseInt( document.getElementById("defper").value );
+		data[2] = parseInt( document.getElementById("hpper").value );
+		data[3] = parseInt( document.getElementById("eff").value );
+		data[4] = parseInt( document.getElementById("res").value );
+		data[5] = parseInt( document.getElementById("critdmg").value );
+		data[6] = parseInt( document.getElementById("critch").value );
+		data[7] = parseInt( document.getElementById("spd").value );
+		data[8] = parseInt( document.getElementById("atkflat").value );
+		data[9] = parseInt( document.getElementById("defflat").value );
+		data[10] = parseInt( document.getElementById("hpflat").value );
+	}
+	else {
+		var typed = document.getElementById("typed-input").value;
+		var parsed_data = typed.split("\n");
+		var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+		parsed_data.forEach(function(item) {
+			var val_stat = item.split(" "); // 0 = value 1 = stat type
+			if(val_stat.length != 2) {
+				err( "Error parsing text.");
+			}
+			switch( val_stat[1].toLowerCase() ) {
+				case "atk%":
+					data[0] = parseInt(val_stat[0]);
+					break;
+				case "def%":
+					data[1] = parseInt(val_stat[0]);
+					break;
+				case "hp%":
+					data[2] = parseInt(val_stat[0]);
+					break;
+				case "eff":
+					data[3] = parseInt(val_stat[0]);
+					break;
+				case "effres":
+					data[4] = parseInt(val_stat[0]);
+					break;
+				case "cd":
+					data[5] = parseInt(val_stat[0]);
+					break;
+				case "cc":
+					data[6] = parseInt(val_stat[0]);
+					break;
+				case "spd":
+					data[7] = parseInt(val_stat[0]);
+					break;
+				case "atk":
+					data[8] = parseInt(val_stat[0]);
+					break;
+				case "def":
+					data[9] = parseInt(val_stat[0]);
+					break;
+				case "def":
+					data[10] = parseInt(val_stat[0]);
+					break;
+				default: err( "Error parsing text."); break;			
+			}
+		});
+	}
 	
 	return data;
 	
@@ -488,24 +539,18 @@ function reset() {
 	err( "" );
 }
 
-function validate(mode_) {
+function validate() {
 	
 	// 0. atk%, 1. def%, 2. hp%, 3. eff%, 4. res%
 	// 5. critdmg
 	// 6. critch
 	// 7. spd
 	// 8. atk flat, 9. def flat, 10. hp flat
-	if (mode_ == 'normal') {
-		var data = getSubstat();
-		var substat_min = getSubstatMin();
-		var totaldata = 0;
-		var substat_name = "";
-		var reforgeMin = getReforge(0);
-	}
-	else {
-		data = parse_text();
-	}
-
+	var data = getSubstat();
+	var substat_min = getSubstatMin();
+	var totaldata = 0;
+	var substat_name = "";
+	var reforgeMin = getReforge(0);
 			
 	// check min
 	for ( var idx = 0; idx < 11; idx ++ ) {
@@ -607,17 +652,17 @@ function validate(mode_) {
 	return 0;
 }
 
-function calc(mode) {
+function calc() {
 	
 	err("");
 	
 	if(mode == 'normal') {
-		if ( validate('normal') !== 0 ) {
+		if ( validate() !== 0 ) {
 			return;
 		}
 	}
 	else {
-		if ( validate('typed') !== 0 ) {
+		if ( validate() !== 0 ) {
 			return;
 		}
 	}
@@ -1332,20 +1377,21 @@ function switch_mode() {
 	const original = document.querySelector('.grid-container');
 	const style = getComputedStyle(element);
 	const style_original = getComputedStyle(original);
-	const x = style_original.display;
-	const mode = style.display;
+	const display = style.display;
 
-	if(mode == "none") {
+	if(display == "none") {
 		element.style.display="block";
 		original.style.display="none";
+		mode = 'text';
 	}
 	else {
 		original.style.display="grid";
 		element.style.display="none";
+		mode = 'normal';
 	}
 }
 
-function parse() {
+function parse_text() {
 	// 0 - atk%
 	// 1 - def%
 	// 2 - hp%
@@ -1357,6 +1403,8 @@ function parse() {
 	// 8 - atk
 	// 9 - def
 	// 10 - hp
+	var typed = document.getElementById("typed-input").value;
+	var data = typed.split("\n");
 	var data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 	
 	// data[0] = parseInt( document.getElementById("atkper").value );

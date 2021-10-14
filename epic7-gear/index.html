@@ -11,8 +11,31 @@
 <body>
 
 <div class="text-mode" style="display: none">
+  <p>Codes for stats (not case sensitive, make sure to add newlines between stats):</p>
+  <p>ATK%, DEF%, HP%, EFF, EFFRES, CD, CC, SPD, ATK, DEF, HP</p>
+  <select id="gear-lv" name="gear-lv" onchange="resetplaceholder()">
+    <option id="lv70" value="lv70">Lv58 - 71</option>
+	<option id="lv85" value="lv85" selected>Lv72 - 85</option>
+	<option id="lv90" value="lv90">Lv86 - 99</option>
+	<option id="lv90r" valur="lv90r">Lv90 Reforged</option>
+  </select>
+  
+  <select id="gear-type" name="gear-type" onchange="resetplaceholder()">
+    <option id="gwhite" value="gwhite" style="color:BLACK; font-weight: bold;">一般</option>
+	<option id="gblue" value="gblue" style="color:BLUE; font-weight: bold;">稀有</option>
+	<option id="gpink" value="gpink" style="color:HOTPINK; font-weight: bold;" selected>英雄</option>
+	<option id="gred" value="gred" style="color:RED; font-weight: bold;">傳說</option>
+  </select>
 
-  <textarea></textarea>
+  <select id="gear-enc-lv" onchange="resetplaceholder()" name="gear-enc-lv">
+    <option id="g0" value="gear-lv0" selected>+0+1+2</option>
+    <option id="g3" value="gear-lv3">+3+4+5</option>
+    <option id="g6" value="gear-lv6">+6+7+8</option>
+	<option id="g9" value="gear-lv9">+9+10+11</option>
+	<option id="g12" value="gear-lv12">+12+13+14</option>
+	<option id="g15" value="gear-lv15">+15</option>
+  </select>  
+  <textarea placeholder="Example: &#10 8 ATK% &#10 4 SPD &#10 40 ATK &#10 4 CC" id="typed-input"></textarea>
   <div class="button" id="btn-calc" onclick="calc('typed')">Calculate</div>
   <div class="button" id="btn-reset" onclick="reset()">Reset</div>
   <div class="grid-error" id="errmsg"></div>
@@ -80,6 +103,6 @@
   
   <div class="grid-error" id="errmsg"></div>
 </div>
-<button onclick="switch_mode()">Click to use text</button>
+<button onclick="switch_mode()">Click to switch modes</button>
 </body>
 </html>
